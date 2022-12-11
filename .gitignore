@@ -1,0 +1,6 @@
+#Git ignore All folder or files inside "example/"
+node_modules/
+config/
+
+#ignore File Name inside anywhere in root folder
+package-lock.json
