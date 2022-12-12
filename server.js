@@ -1,17 +1,38 @@
 const express = require("express"),
     config = require("config"),
     bodyParser = require("body-parser"),
+    handlebars = require('express-handlebars'),
     app = express();
 
-    app.get("/", (req, res) => {
+const {generateImage} = require("./controllers/imageGenerate");
 
-        const data = "Running";
+app.set('view engine', 'hbs');
+app.engine('hbs', handlebars({
+    extname: 'hbs',
+    layoutsDir: __dirname + '/views/layouts',
+    partialsDir: __dirname + '/views/partials'
+}));
 
-        res.status(200).json({"Message" : "Success", "Data" : data})
+app.get("/", (req, res) => {
 
-        console.log(`Running`);
-    });
+    const data = "Running";
 
-    app.listen(config.get("App.port"), () => {
-        console.log(`App Is Running At http://${config.get("App.host")}:${config.get("App.port")}`);
-    });
+    res.status(200).json({ "Message": "Success", "Data": data })
+
+    console.log(`Running`);
+});
+
+app.get("/generate", generateImage);
+
+
+// app.get("/generate", async (req, res) => {
+
+//     const data = await generateImage;
+
+//     res.status(200).render("index", {layout : "main", data});
+
+// });
+
+app.listen(config.get("App.port"), () => {
+    console.log(`App Is Running At http://${config.get("App.host")}:${config.get("App.port")}`);
+});
